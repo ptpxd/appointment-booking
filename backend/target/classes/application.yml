@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: appointment-booking
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/appointments}
+    username: ${DATABASE_USERNAME:appointments}
+    password: ${DATABASE_PASSWORD:appointments}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+  jackson:
+    default-property-inclusion: non_null
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+appointment:
+  confirmation-base-url: ${CONFIRMATION_BASE_URL:http://localhost:5173/booking/confirm}
+  reservation-expiry-interval-ms: ${RESERVATION_EXPIRY_INTERVAL_MS:60000}
+logging:
+  pattern:
+    console: '{"time":"%d{ISO8601}","level":"%p","logger":"%logger{36}","message":"%msg"}%n'

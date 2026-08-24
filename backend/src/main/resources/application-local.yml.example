@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/appointments
+    username: appointments
+    password: appointments
+  mail:
+    host: localhost
+    port: 1025
+appointment:
+  confirmation-base-url: http://localhost:5173/booking/confirm

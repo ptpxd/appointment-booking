@@ -1,0 +1,10 @@
+import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { authApi } from "../api/authApi";
+import { ApiError } from "../api/httpClient";
+
+export function ProviderAuthPage({ mode }: { mode: "login" | "register" }) {
+  const navigate = useNavigate(); const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [displayName, setDisplayName] = useState(""); const [error, setError] = useState(""); const [busy, setBusy] = useState(false); const registering = mode === "register";
+  async function submit(event: FormEvent) { event.preventDefault(); setBusy(true); setError(""); try { if (registering) { await authApi.register({ email, password, displayName }); navigate("/provider/login?registered=1"); } else { await authApi.login({ email, password }); sessionStorage.setItem("providerSession", "active"); navigate("/provider/dashboard"); } } catch (reason) { setError(reason instanceof ApiError ? reason.message : "A muvelet nem sikerult."); } finally { setBusy(false); } }
+  return <main className="app-shell narrow"><Link to="/">Idopontfoglalas</Link><h1>{registering ? "Szolgaltatoi regisztracio" : "Szolgaltatoi belepes"}</h1><form className="form-panel" onSubmit={submit}>{registering && <label>Megjeleno nev<input required value={displayName} onChange={(event) => setDisplayName(event.target.value)} /></label>}<label>Email cim<input required type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} /></label><label>Jelszo<input required minLength={8} type="password" autoComplete={registering ? "new-password" : "current-password"} value={password} onChange={(event) => setPassword(event.target.value)} /></label><button disabled={busy}>{busy ? "Folyamatban..." : registering ? "Fiok letrehozasa" : "Belepes"}</button><p role="alert">{error}</p></form><p>{registering ? <Link to="/provider/login">Mar van fiokom</Link> : <Link to="/provider/register">Uj szolgaltatoi fiok</Link>}</p></main>;
+}

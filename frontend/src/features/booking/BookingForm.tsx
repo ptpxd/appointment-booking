@@ -1,0 +1,11 @@
+import { useState, type FormEvent } from "react";
+import { ApiError } from "../../api/httpClient";
+import { publicBookingApi, type Slot, type TimeOfDay } from "../../api/publicBookingApi";
+import { AppointmentAlternatives } from "./AppointmentAlternatives";
+import { formatSlot } from "./formatSlot";
+
+export function BookingForm({ slot, date, onAlternative }: { slot: Slot; date: string; onAlternative: (slot: Slot) => void }) {
+  const [email, setEmail] = useState(""); const [timeOfDay, setTimeOfDay] = useState<TimeOfDay>("MORNING"); const [message, setMessage] = useState(""); const [alternatives, setAlternatives] = useState<Slot[]>([]); const [busy, setBusy] = useState(false);
+  async function submit(event: FormEvent) { event.preventDefault(); setBusy(true); setMessage(""); setAlternatives([]); try { const response = await publicBookingApi.createBooking({ slotId: slot.id, guestEmail: email, preference: { preferredDate: date, preferredTimeOfDay: timeOfDay } }); setMessage(response.message || `Megerosito emailt kuldtunk. A foglalas ${new Date(response.expiresAt).toLocaleTimeString("hu-HU")} idopontig ervenyes.`); } catch (error) { if (error instanceof ApiError && error.code === "SLOT_UNAVAILABLE") { setAlternatives((error.details as Slot[] | undefined) ?? []); setMessage("Ez az idopont kozben betelt."); } else setMessage(error instanceof Error ? error.message : "A foglalas nem sikerult."); } finally { setBusy(false); } }
+  return <section className="form-panel" aria-labelledby="booking-title"><h2 id="booking-title">Foglalas: {formatSlot(slot)}</h2><form onSubmit={submit}><label>Email cim<input required type="email" value={email} onChange={(event) => setEmail(event.target.value)} /></label><label>Preferalt napszak<select value={timeOfDay} onChange={(event) => setTimeOfDay(event.target.value as TimeOfDay)}><option value="MORNING">Delelott</option><option value="AFTERNOON">Delutan</option><option value="EVENING">Este</option></select></label><button disabled={busy}>{busy ? "Foglalas folyamatban..." : "Foglalas inditasa"}</button></form><p aria-live="polite" role="status">{message}</p><AppointmentAlternatives slots={alternatives} onSelect={onAlternative} /></section>;
+}

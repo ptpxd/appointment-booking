@@ -1,0 +1,11 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authApi } from "../api/authApi";
+import { ApiError } from "../api/httpClient";
+import { providerSlotsApi, type ProviderSlot } from "../api/providerSlotsApi";
+import { SlotManagementPanel } from "../features/provider-dashboard/SlotManagementPanel";
+
+const range = () => ({ from: new Date().toISOString(), to: new Date(Date.now() + 90 * 86400000).toISOString() });
+export function ProviderDashboardPage() { const navigate = useNavigate(); const [slots, setSlots] = useState<ProviderSlot[]>([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const load = async () => { try { const { from, to } = range(); setSlots((await providerSlotsApi.list(from, to)).content); } catch (reason) { setError(reason instanceof ApiError ? reason.message : "Az idosavak nem tolthetők be."); } finally { setLoading(false); } }; useEffect(() => { const { from, to } = range(); providerSlotsApi.list(from, to).then((response) => setSlots(response.content)).catch((reason) => setError(reason instanceof ApiError ? reason.message : "Az idosavak nem tolthetők be.")).finally(() => setLoading(false)); }, []);
+  const perform = async (operation: () => Promise<unknown>) => { setError(""); setLoading(true); try { await operation(); await load(); } catch (reason) { setLoading(false); setError(reason instanceof ApiError ? reason.message : "A muvelet nem sikerult."); } };
+  return <main className="app-shell"><header><a href="/">Idopontfoglalas</a><button type="button" onClick={() => void authApi.logout().finally(() => { sessionStorage.removeItem("providerSession"); navigate("/provider/login"); })}>Kijelentkezes</button></header><h1>Szolgaltatoi naptar</h1>{error && <p role="alert">{error}</p>}{loading ? <p role="status">Idosavak betoltese...</p> : <SlotManagementPanel slots={slots} onCreate={(start, end) => perform(() => providerSlotsApi.create({ startsAt: start, endsAt: end }))} onUpdate={(slot, start, end) => perform(() => providerSlotsApi.update(slot.id, { startsAt: start, endsAt: end }))} onDelete={(slot) => perform(() => providerSlotsApi.remove(slot.id))} />}</main>; }

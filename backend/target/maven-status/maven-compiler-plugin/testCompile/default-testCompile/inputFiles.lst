@@ -1,0 +1,14 @@
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\contract\BookingRecommendationContractTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\contract\ProviderDashboardControllerContractTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\contract\PublicBookingControllerContractTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\integration\AppointmentRecommendationIntegrationTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\integration\ConcurrentReservationIntegrationTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\integration\PostgresIntegrationTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\integration\ProviderOwnershipIntegrationTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\integration\ReservationExpiryIntegrationTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\performance\ConcurrentBookingLoadTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\support\AppointmentFixtures.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\unit\provider\ProviderRegistrationServiceTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\unit\recommendation\AppointmentRecommendationServiceTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\unit\reservation\ReservationStateMachineTest.java
+C:\Users\petro\Desktop\szakdoga\appointment booking\appointment_booking\backend\src\test\java\com\appointmentbooking\unit\slot\ManageBookableSlotUseCaseTest.java
